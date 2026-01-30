@@ -143,6 +143,13 @@ Backtests are async — POST triggers, then poll GET until complete.
 3. **Ask the user** which symbols to activate for
 4. **Activate symbols** → `POST /strategy-symbols/{strategyId}/enable-all` with `{ "symbols": ["BTC-USD", "ETH-USD"] }`
 
+### Recompile After Updates
+> ⚠️ **CRITICAL:** Updating a custom event (`PUT /custom-events/{id}`) or strategy (`PUT /visual-strategies/{id}`) **wipes the compilation**. You **MUST** recompile after any update:
+> - Event: `POST /custom-events/{id}/compile`
+> - Strategy: `POST /visual-strategies/{id}/compile`
+>
+> Without recompiling, the event/strategy will **silently stop firing** — no error, just nothing happens.
+
 ### Checking Active Symbols
 - Event symbols: `GET /custom-event-symbols/event/{eventId}`
 - Strategy symbols: `GET /strategy-symbols/strategy/{strategyId}`
