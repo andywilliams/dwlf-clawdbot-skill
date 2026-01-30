@@ -148,6 +148,76 @@ Create a custom event definition.
 ### GET /custom-events/{eventId}
 Event details and trigger history.
 
+## Custom Event Symbol Activation
+
+Manages which symbols a custom event is active for. Events only fire for activated symbols.
+
+### POST /custom-event-symbols
+Activate a single symbol for a custom event.
+- Body: `{ eventId: string, symbol: string, config?: object }`
+- Response: `{ eventId, symbol, isActive: true, ... }`
+
+### POST /custom-event-symbols/:eventId/enable-all
+Bulk activate symbols for a custom event.
+- Body: `{ symbols: ["BTC-USD", "ETH-USD", ...] }`
+- Response: `{ enabled: number, symbols: [...] }`
+
+### POST /custom-event-symbols/:eventId/disable-all
+Bulk deactivate symbols for a custom event.
+- Body: `{ symbols: ["BTC-USD", "ETH-USD", ...] }`
+- Response: `{ disabled: number, symbols: [...] }`
+
+### GET /custom-event-symbols/event/:eventId
+Get active symbols for a specific custom event.
+- Response: `{ symbols: [{ symbol, isActive, config?, ... }] }`
+
+### GET /custom-event-symbols
+List all user's custom event-symbol associations.
+- Params: `activeOnly` (boolean, default false)
+- Response: `{ associations: [{ eventId, symbol, isActive, ... }] }`
+
+### PUT /custom-event-symbols/:eventId/:symbol/deactivate
+Deactivate a single symbol for an event.
+- Response: `{ eventId, symbol, isActive: false }`
+
+### DELETE /custom-event-symbols/:eventId/:symbol
+Permanently delete a symbol association for an event.
+
+## Strategy Symbol Activation
+
+Manages which symbols a strategy is active for. Strategies only generate signals for activated symbols.
+
+### POST /strategy-symbols
+Activate a single symbol for a strategy.
+- Body: `{ strategyId: string, symbol: string, config?: object }`
+- Response: `{ strategyId, symbol, isActive: true, ... }`
+
+### POST /strategy-symbols/:strategyId/enable-all
+Bulk activate symbols for a strategy.
+- Body: `{ symbols: ["BTC-USD", "ETH-USD", ...] }`
+- Response: `{ enabled: number, symbols: [...] }`
+
+### POST /strategy-symbols/:strategyId/disable-all
+Bulk deactivate symbols for a strategy.
+- Body: `{ symbols: ["BTC-USD", "ETH-USD", ...] }`
+- Response: `{ disabled: number, symbols: [...] }`
+
+### GET /strategy-symbols/strategy/:strategyId
+Get active symbols for a specific strategy.
+- Response: `{ symbols: [{ symbol, isActive, config?, ... }] }`
+
+### GET /strategy-symbols
+List all user's strategy-symbol associations.
+- Params: `activeOnly` (boolean, default false)
+- Response: `{ associations: [{ strategyId, symbol, isActive, ... }] }`
+
+### PUT /strategy-symbols/:strategyId/:symbol/deactivate
+Deactivate a single symbol for a strategy.
+- Response: `{ strategyId, symbol, isActive: false }`
+
+### DELETE /strategy-symbols/:strategyId/:symbol
+Permanently delete a symbol association for a strategy.
+
 ## Evaluations
 
 ### POST /evaluations

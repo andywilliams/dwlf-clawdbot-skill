@@ -105,11 +105,52 @@ Backtests are async — POST triggers, then poll GET until complete.
 | POST | `/custom-events` | Create custom event |
 | GET | `/custom-events/{id}` | Event details |
 
+### Custom Event Symbol Activation
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/custom-event-symbols/:eventId/enable-all` | Bulk activate symbols for an event |
+| POST | `/custom-event-symbols/:eventId/disable-all` | Bulk deactivate symbols for an event |
+| GET | `/custom-event-symbols/event/:eventId` | Get active symbols for an event |
+| GET | `/custom-event-symbols` | List all event-symbol associations |
+
+### Strategy Symbol Activation
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/strategy-symbols/:strategyId/enable-all` | Bulk activate symbols for a strategy |
+| POST | `/strategy-symbols/:strategyId/disable-all` | Bulk deactivate symbols for a strategy |
+| GET | `/strategy-symbols/strategy/:strategyId` | Get active symbols for a strategy |
+| GET | `/strategy-symbols` | List all strategy-symbol associations |
+
 ### Evaluations
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/evaluations` | Trigger evaluation run |
 | GET | `/evaluations/{id}` | Get evaluation results |
+
+## Symbol Activation (Required After Creation)
+
+> ⚠️ **IMPORTANT:** Creating a custom event or strategy does **NOT** automatically activate it for any symbols. After creation, you **MUST** ask the user which symbols to activate it for, then call the enable endpoint. Without this step, the event/strategy will **not fire or generate signals**.
+
+### Workflow: Custom Events
+1. Create the event → `POST /custom-events`
+2. Compile the event → `POST /custom-events/{id}/compile`
+3. **Ask the user** which symbols to activate for
+4. **Activate symbols** → `POST /custom-event-symbols/{eventId}/enable-all` with `{ "symbols": ["BTC-USD", "ETH-USD"] }`
+
+### Workflow: Strategies
+1. Create the strategy → `POST /visual-strategies`
+2. Compile the strategy → `POST /visual-strategies/{id}/compile`
+3. **Ask the user** which symbols to activate for
+4. **Activate symbols** → `POST /strategy-symbols/{strategyId}/enable-all` with `{ "symbols": ["BTC-USD", "ETH-USD"] }`
+
+### Checking Active Symbols
+- Event symbols: `GET /custom-event-symbols/event/{eventId}`
+- Strategy symbols: `GET /strategy-symbols/strategy/{strategyId}`
+- All activations: `GET /custom-event-symbols` and `GET /strategy-symbols` (query: `?activeOnly=true`)
+
+### Deactivating Symbols
+- Event: `POST /custom-event-symbols/{eventId}/disable-all` with `{ "symbols": [...] }`
+- Strategy: `POST /strategy-symbols/{strategyId}/disable-all` with `{ "symbols": [...] }`
 
 ## Response Formatting
 
