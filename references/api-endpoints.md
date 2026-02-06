@@ -175,7 +175,7 @@ Historical portfolio snapshots.
 
 ### GET /trades
 List trades with filters.
-- Params: `status` (open|closed), `symbol`, `limit`
+- Params: `status` (open|closed), `symbol` (optional), `includeNotes` (optional, boolean), `limit`
 
 ### POST /trades
 Log a new trade.
@@ -241,10 +241,19 @@ List user's custom events.
 
 ### POST /custom-events
 Create a custom event definition.
-- Body: `{ name, conditions, symbols? }`
+- Body: `{ name, conditions, symbols?, notifyOnFire? }` (boolean, default `false`)
+
+### PUT /custom-events/{eventId}
+Update a custom event definition.
+- Body: partial update fields (including `notifyOnFire`, boolean, default `false`)
 
 ### GET /custom-events/{eventId}
 Event details and trigger history.
+
+### GET /custom-events/notifications
+List custom events with notifications enabled.
+- Returns: `{ events: [...] }` (events with `notifyOnFire=true`)
+- Used for notification settings page.
 
 ## Custom Event Symbol Activation
 

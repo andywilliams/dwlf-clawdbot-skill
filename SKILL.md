@@ -184,10 +184,14 @@ Backtests are async — POST triggers, then poll GET until `status: "completed"`
 |--------|------|-------------|
 | GET | `/portfolios` | List portfolios |
 | GET | `/portfolios/{id}` | Portfolio details + holdings |
-| GET | `/trades?status=open` | List trades |
+| GET | `/trades?status=open&symbol={symbol}&includeNotes=true` | List trades |
 | POST | `/trades` | Log a new trade |
 | PUT | `/trades/{id}` | Update trade |
 | GET | `/trade-plans` | List trade plans |
+
+Notes:
+- `symbol` filters trades for chart overlays.
+- `includeNotes=true` includes trade notes in the response.
 
 ### Watchlist
 | Method | Path | Description |
@@ -200,6 +204,7 @@ Backtests are async — POST triggers, then poll GET until `status: "completed"`
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/custom-events` | List custom events |
+| GET | `/custom-events/notifications` | List events with notifications enabled (`notifyOnFire=true`) |
 | POST | `/custom-events` | Create custom event |
 | GET | `/custom-events/{id}` | Event details |
 
